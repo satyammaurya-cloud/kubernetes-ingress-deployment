@@ -29,45 +29,53 @@ kubernetes-ingress-deployment
 
 ---
 
-# Step 1: Build Docker Image
+Step 1: Build Docker Image
 
 ```
-docker build -t nginx-hpa .
+# Install Docker
+yum install docker -y
+systemctl start docker
+
+# Build Docker Image (Main Application)
+docker build -t main .   # root folder contains index.html and Dockerfile
+
+# Build AWS Image
+cd aws/
+docker build -t aws .
+
+# Build Azure Image
+cd ../azure/
+docker build -t azure .
+
+# Build GCP Image
+cd ../gcp/
+docker build -t gcp .
 ```
 
----
-
-# Step 2: Tag Image for AWS ECR
-
-```
-docker tag nginx-hpa:latest <aws_account_id>.dkr.ecr.<region>.amazonaws.com/nginx-hpa:latest
-```
+Step 2: Tag Image for AWS ECR
 
 Example:
 
 ```
-docker tag nginx-hpa:latest 123456789012.dkr.ecr.us-east-1.amazonaws.com/nginx-hpa:latest
+docker tag main:latest 123456789012.dkr.ecr.us-east-1.amazonaws.com/main:latest
 ```
 
----
 
-# Step 3: Login to AWS ECR
+Step 3: Login to AWS ECR
 
 ```
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.us-east-1.amazonaws.com
 ```
 
----
 
-# Step 4: Push Image to ECR
+Step 4: Push Image to ECR
 
 ```
-docker push <aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/nginx-hpa:latest
+docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/main:latest
 ```
 
----
 
-# Step 5: Deploy Application to Kubernetes
+Step 5: Deploy Application to Kubernetes
 
 Deployment uses the image stored in **AWS ECR**.
 
@@ -87,31 +95,27 @@ Apply deployment:
 kubectl apply -f k8s-files/deployment.yaml
 ```
 
----
 
-# Step 6: Create Kubernetes Service
+Step 6: Create Kubernetes Service
 
 ```
 kubectl apply -f k8s-files/service.yaml
 ```
 
----
 
-# Step 7: Install NGINX Ingress Controller
+Step 7: Install NGINX Ingress Controller
 
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
 ```
 
----
 
-# Step 8: Deploy Ingress
+Step 8: Deploy Ingress
 
 ```
 kubectl apply -f k8s-files/ingress.yaml
 ```
 
----
 
 # Verify Deployment
 
@@ -128,8 +132,3 @@ kubectl get ingress
 Internet → Ingress Controller → Service → Pods
 
 ---
-
-# Author
-
-**Siva Maurya**  
-DevOps Engineer
