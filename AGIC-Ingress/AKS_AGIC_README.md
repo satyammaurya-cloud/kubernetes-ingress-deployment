@@ -8,7 +8,7 @@ Quick reference for exposing AKS applications through Azure Application Gateway 
 
 AGIC runs inside AKS, watches Kubernetes Ingress resources, and configures Application Gateway listeners, routing rules, backend pools, and health probes. **AGIC manages configuration; it does not proxy application traffic itself.**
 
-![alt text](image.png)
+<img width="808" height="374" alt="image" src="https://github.com/user-attachments/assets/ddc0aa09-150c-4af5-a28f-0b1c9fe6fad4" />
 
 ## Environment
 
