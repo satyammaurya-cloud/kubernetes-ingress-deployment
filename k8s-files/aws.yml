@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: aws
-          image: 211125606152.dkr.ecr.us-west-2.amazonaws.com/aws:latest
+          image: customarc.azurecr.io/aws:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80

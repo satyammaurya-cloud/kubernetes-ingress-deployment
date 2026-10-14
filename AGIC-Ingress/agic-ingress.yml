@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: agic-paths-ingress
+  annotations:
+    appgw.ingress.kubernetes.io/backend-path-prefix: "/"
+spec:
+  ingressClassName: azure-application-gateway
+  rules:
+    - host: learnwithsatyam.in  # Add your domain here
+    # - http:
+      http:
+        paths:
+          - path: /azure
+            pathType: Prefix
+            backend:
+              service:
+                name: azure-service
+                port:
+                  number: 80
+
+          - path: /aws
+            pathType: Prefix
+            backend:
+              service:
+                name: aws-service
+                port:
+                  number: 80
+
+          - path: /gcp
+            pathType: Prefix
+            backend:
+              service:
+                name: gcp-service
+                port:
+                  number: 80
+
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: main-service
+                port:
+                  number: 80
