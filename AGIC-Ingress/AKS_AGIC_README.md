@@ -8,6 +8,8 @@ Quick reference for exposing AKS applications through Azure Application Gateway 
 
 AGIC runs inside AKS, watches Kubernetes Ingress resources, and configures Application Gateway listeners, routing rules, backend pools, and health probes. **AGIC manages configuration; it does not proxy application traffic itself.**
 
+![alt text](image.png)
+
 ## Environment
 
 | Resource | Value |
@@ -200,3 +202,21 @@ Enable HTTP-to-HTTPS redirect only after HTTPS is configured and tested.
 - [Enable AGIC add-on](https://learn.microsoft.com/en-us/azure/application-gateway/tutorial-ingress-controller-add-on-existing)
 - [AGIC troubleshooting](https://learn.microsoft.com/en-us/troubleshoot/azure/application-gateway/ingress-controller-troubleshoot)
 - [AGIC annotations](https://learn.microsoft.com/en-us/azure/application-gateway/ingress-controller-annotations)
+
+```sh
+
+# AGIC Deployment
+kubectl get deployment ingress-appgw-deployment -n kube-system
+
+# AGIC Pod aur uska Worker Node
+kubectl get pods -n kube-system -o wide | grep ingress-appgw
+
+# Application Pods aur Worker Nodes
+kubectl get pods -n default -o wide
+
+# Ingress resource (Pod nahi hai)
+kubectl get ingress -n default
+
+# Worker Nodes
+kubectl get nodes -o wide
+```
